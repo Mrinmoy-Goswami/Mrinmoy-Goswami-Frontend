@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+the debugged listcomponent is in src->Components->DebuggedList.jsx. The other ListCom.jsx is the problem component.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+DESCRIPTION : 
+The List component takes memo(memoization) of WrappedListComponent which basically takes an array of objects (items) and for each item (with a required prop text of type string), renders another singleList component(which is again memo of WrappeSingleListItem) which
+again takes some props like isSelected(boolean) which decides the background colour of the list item + a function onClickhandler for changing the isSelected field.
+  The List component maps through the array items for rendering SinglelistItem.
+  
+  ERRORS IN THE CODE :
+  1.ShapeOf is not a function
+  FIX
+  =>The error is due to the proptype declaration for wrappelistcomponent 'items'  PropTypes.array(PropTypes.shapeOf(). it should be PropTypes.arrayOf(PropType.shape()
+  
+  2.Sent null as default to wrappedListComponent. Cannot read properties of null.
+  FIX
+  =>Made a dummy array of objects "items". Coz sending null as props isn't a great idea.
+  
+  3.setSelectedindex is not a function.
+  FIX
+  => Due to switching variable and function name in the destructuring of  useState. it should be const[selectedIndex,setSelectedIndex] which was the opposite initially.
+  
+  4.  warning "No key prop for list...."
+  FIX
+  =>while sending the array "item" a key field should be there . This makes further operations like sorting and management easier. 
+  
+  5.BAD SETSTATE CALL. Cannot update a function while rendering another.
+  => This warning is basically due to trying to change the state using handleCLick function which is called immediately using (). Should be sent as a prop only.
+  Moreover instead of trying to pass index to isSelected for toggling the selected field,A better approach might be giving control to the list item itself for this based on certain props from parent.
+  
+  6. Sent number instead of boolean to the isSelected prop. sent index to it.
+  =>The Proptype of sisSelected is boolean and "index" is sent inside this field which violates the proptype behaviour.Used another usestate hook with boolean . Which on click, toggles the isSelected field of each item and hence ,toggling the bg colour between green and red.
+  
+  
